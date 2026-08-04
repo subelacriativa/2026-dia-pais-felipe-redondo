@@ -11,7 +11,7 @@
     <meta property="og:title" content="Uma Surpresa Especial Para Você! ❤️">
     <meta property="og:description" content="Clique para ver a homenagem linda de Dia dos Pais que preparei!">
     <meta property="og:image" content="foto-previa.jpg">
-    <meta property="og:url" content="https://subelacriativa.github.io/dia-pais-video-teste-02/">
+    <meta property="og:url" content="https://subelacriativa.github.io/2026-dia-pais-wilson-galvao/">
     <meta property="og:type" content="website">
 
     <link rel="preload" href="2026_dia_pais_wilson_video.mp4" as="video">
@@ -40,11 +40,12 @@
             box-sizing: inherit;
             margin: 0;
             padding: 0;
-            -webkit-tap-highlight-color: transparent; /* Mobile performance & UX improvement */
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
+            /* IMAGEM DE FUNDO ATUALIZADA AQUI */
             background: url('fundo.jpg') no-repeat center center fixed;
             background-size: cover;
             min-height: 100vh;
@@ -57,7 +58,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Cartão Glassmorphism Moderno */
         .cartao-surpresa {
             background: var(--background-card);
             backdrop-filter: blur(16px);
@@ -122,7 +122,6 @@
             letter-spacing: -0.1px;
         }
 
-        /* Botões Clean e Flat */
         .btn-principal {
             background: var(--cor-gradiente);
             color: white;
@@ -152,7 +151,6 @@
             transform: translateY(0); 
         }
 
-        /* Classes sem CSS Inline */
         .btn-azul {
             background: #2563eb !important;
             box-shadow: none !important;
@@ -165,7 +163,6 @@
             max-width: 280px;
         }
 
-        /* Grid do Jogo Renovado */
         #tela-jogo {
             display: none;
         }
@@ -206,7 +203,6 @@
             box-shadow: 0 0 24px currentColor;
         }
 
-        /* Canvas de Fogos Remodelado */
         #canvas-fogos {
             position: fixed;
             top: 0;
@@ -250,7 +246,6 @@
             font-weight: 400;
         }
 
-        /* Player Minimalista */
         #container-player {
             position: fixed;
             top: 0;
@@ -295,7 +290,6 @@
             font-size: 1.4rem;
         }
 
-        /* Tela Final Organizada */
         #tela-final {
             display: none;
         }
@@ -360,7 +354,6 @@
             color: var(--cor-subtexto);
         }
 
-        /* Rodapé Global Unificado */
         #rodape-global { 
             margin-top: 32px; 
             display: flex;
@@ -397,7 +390,6 @@
             letter-spacing: 0.2px;
         }
 
-        /* Animações Modernas */
         @keyframes surgir {
             from { opacity: 0; transform: scale(0.96) translateY(10px); }
             to { opacity: 1; transform: scale(1) translateY(0); }
@@ -476,7 +468,7 @@
     <p>Guarde essa linda recordação ou envie direto para quem você mais ama no WhatsApp!</p>
     
     <div class="lista-botoes">
-        <a href="https://api.whatsapp.com/send?text=Olha%20a%20surpresa%20linda%20que%20ganhei%20de%20Dia%20dos%20Pais!%20%E2%9D%A4%EF%B8%8F%20https://subelacriativa.github.io/dia-pais-video-teste-02/" target="_blank" rel="noopener noreferrer" class="btn-opcao whatsapp">
+        <a href="https://api.whatsapp.com/send?text=Olha%20a%20surpresa%20linda%20que%20ganhei%20de%20Dia%20dos%20Pais!%20%E2%9D%A4%EF%B8%8F%20https://subelacriativa.github.io/2026-dia-pais-wilson-galvao/" target="_blank" rel="noopener noreferrer" class="btn-opcao whatsapp">
             Compartilhar no WhatsApp
         </a>
         
@@ -491,7 +483,6 @@
 </section>
 
 <script>
-    // Gerenciador de Estado Centralizado (Evita múltiplos setTimeouts bagunçados)
     const app = {
         tela: "inicio",
         sequenciaJogo: [],
@@ -501,12 +492,10 @@
         animacaoFogosAtiva: false
     };
 
-    // Helper Unificado para Event Listeners
     function on(id, event, callback) {
         document.getElementById(id)?.addEventListener(event, callback);
     }
 
-    // Injeção Automática do Rodapé Unificado (DRY principle)
     function injetarRodapes() {
         const template = document.getElementById('template-rodape');
         const secoes = ['tela-inicial', 'tela-jogo', 'tela-final'];
@@ -519,10 +508,9 @@
         });
     }
 
-    // Geração Dinâmica de Sequência para o Jogo Genius
     function gerarSequenciaAleatoria() {
         app.sequenciaJogo = [];
-        for (let i = 0; i < 3; i++) { // Mantendo tamanho prático de 3 passos, mas 100% dinâmico
+        for (let i = 0; i < 3; i++) {
             app.sequenciaJogo.push(Math.floor(Math.random() * 4));
         }
     }
@@ -583,7 +571,6 @@
         }
     }
 
-    // Estrutura de Animação de Fogos de Artifício em Canvas (Alta Performance)
     const canvas = document.getElementById('canvas-fogos');
     const ctx = canvas.getContext('2d');
     let particulas = [];
@@ -609,7 +596,7 @@
         atualizar() {
             this.x += this.vx;
             this.y += this.vy;
-            this.vy += 0.04; // gravidade sutil
+            this.vy += 0.04;
             this.alpha -= this.decay;
         }
         desenhar() {
@@ -663,13 +650,12 @@
                 document.getElementById('container-player').style.display = 'flex';
                 
                 const video = document.getElementById('video-principal');
-                video.muted = false; // Desmuta para a experiência completa do usuário
+                video.muted = false;
                 video.play().catch(err => console.log("Aviso de auto-play ajustado.", err));
             }, 3200);
         }, 600);
     }
 
-    // Configuração dos Eventos (Usando a função otimizada 'on')
     on("btn-ir-jogo", "click", () => {
         document.getElementById('tela-inicial').style.display = 'none';
         document.getElementById('tela-jogo').style.display = 'block';
@@ -701,7 +687,6 @@
         document.getElementById('tela-inicial').style.display = 'block';
     });
 
-    // Inicialização ao carregar a página
     document.addEventListener('DOMContentLoaded', () => {
         injetarRodapes();
         window.addEventListener('resize', redimensionarCanvas);
