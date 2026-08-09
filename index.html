@@ -14,7 +14,6 @@
     <meta property="og:url" content="https://subelacriativa.github.io/2026-dia-pais-felipe-redondo/">
     <meta property="og:type" content="website">
 
-    <link rel="preload" href="video-2026-dia-pais-felipe-redondo.mp4" as="video">
     <link rel="preload" href="fundo.jpg" as="image">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -295,48 +294,79 @@
             font-weight: 400;
         }
 
-        #container-player {
+        /* --- APRESENTAÇÃO DE FOTOS (GALERIA) --- */
+        #container-galeria {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: #000;
+            background: rgba(15, 23, 42, 0.95);
             z-index: 9999;
             display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            padding: 20px;
         }
 
-        video {
+        .carrossel-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 480px;
+            height: 65vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .foto-slide {
             width: 100%;
             height: 100%;
             object-fit: contain;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: opacity 0.4s ease-in-out;
         }
 
-        #menu-fim-video {
+        .nav-btn {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(8px);
-            display: none;
-            flex-direction: column;
-            justify-content: center;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            font-size: 1.5rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            display: flex;
             align-items: center;
-            gap: 16px;
-            padding: 24px;
-            z-index: 10000;
+            justify-content: center;
+            transition: background 0.2s;
+            z-index: 10;
         }
 
-        #menu-fim-video h2 {
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .nav-btn.prev { left: -10px; }
+        .nav-btn.next { right: -10px; }
+
+        .indicador-fotos {
+            margin-top: 15px;
             color: white;
+            font-size: 0.95rem;
             font-weight: 600;
-            margin-bottom: 12px;
-            font-size: 1.4rem;
+            letter-spacing: 1px;
+        }
+
+        .btn-avancar-galeria {
+            margin-top: 20px;
+            max-width: 280px;
         }
 
         #tela-final {
@@ -522,14 +552,16 @@
     </div>
 </div>
 
-<div id="container-player">
-    <video id="video-principal" src="video-2026-dia-pais-felipe-redondo.mp4" crossorigin="anonymous" playsinline muted preload="metadata" controlslist="nodownload" disablepictureinpicture></video>
-    
-    <div id="menu-fim-video">
-        <h2>O que deseja fazer agora?</h2>
-        <button class="btn-principal btn-azul" id="btn-repetir">🔄 Assistir Novamente</button>
-        <button class="btn-principal btn-vermelho" id="btn-voltar">🚪 Continuar</button>
+<div id="container-galeria">
+    <div class="carrossel-wrapper">
+        <button class="nav-btn prev" onclick="mudarFoto(-1)">❮</button>
+        <img id="foto-exibida" class="foto-slide" src="foto_01.jpeg" alt="Foto Homenagem">
+        <button class="nav-btn next" onclick="mudarFoto(1)">❯</button>
     </div>
+    <div class="indicador-fotos" id="indicador-fotos">1 / 6</div>
+    <button class="btn-principal btn-vermelho btn-avancar-galeria" id="btn-finalizar-galeria">
+        🚪 Continuar
+    </button>
 </div>
 
 <section id="tela-final" class="cartao-surpresa">
@@ -545,10 +577,6 @@
         <a href="https://api.whatsapp.com/send?text=Olha%20a%20surpresa%20linda%20que%20ganhei%20de%20Dia%20dos%20Pais!%20%E2%9D%A4%EF%B8%8F%20https://subelacriativa.github.io/2026-dia-pais-felipe-redondo/" target="_blank" rel="noopener noreferrer" class="btn-opcao whatsapp">
             Compartilhar no WhatsApp
         </a>
-        
-        <a href="video-2026-dia-pais-felipe-redondo.mp4" download="video-2026-dia-pais-felipe-redondo.mp4" target="_blank" rel="noopener noreferrer" class="btn-opcao baixar">
-            Salvar Vídeo na Galeria
-        </a>
 
         <button class="btn-opcao btn-recomecar" id="btn-recomecar-tudo">
             ↩️ Voltar para o início
@@ -560,6 +588,17 @@
     // Configuração da Senha do Cofre
     const SENHA_CORRETA = "2020";
     let senhaDigitada = "";
+
+    // Lista de fotos da apresentação
+    const fotos = [
+        'foto_01.jpeg',
+        'foto_02.jpeg',
+        'foto_03.jpeg',
+        'foto_04.jpeg',
+        'foto_05.jpeg',
+        'foto_06.jpeg'
+    ];
+    let fotoAtualIndex = 0;
 
     const app = {
         animacaoFogosAtiva: false
@@ -635,6 +674,28 @@
         }
     }
     /* --- FIM LÓGICA DO COFRE --- */
+
+    /* --- LÓGICA DA GALERIA DE FOTOS --- */
+    function atualizarFoto() {
+        const img = document.getElementById('foto-exibida');
+        img.style.opacity = '0';
+        setTimeout(() => {
+            img.src = fotos[fotoAtualIndex];
+            img.style.opacity = '1';
+            document.getElementById('indicador-fotos').innerText = `${fotoAtualIndex + 1} / ${fotos.length}`;
+        }, 200);
+    }
+
+    function mudarFoto(direcao) {
+        fotoAtualIndex += direcao;
+        if (fotoAtualIndex < 0) {
+            fotoAtualIndex = fotos.length - 1;
+        } else if (fotoAtualIndex >= fotos.length) {
+            fotoAtualIndex = 0;
+        }
+        atualizarFoto();
+    }
+    /* --- FIM LÓGICA DA GALERIA --- */
 
     const canvas = document.getElementById('canvas-fogos');
     const ctx = canvas.getContext('2d');
@@ -712,11 +773,11 @@
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 particulas = [];
                 document.getElementById('efeito-fogos').style.display = 'none';
-                document.getElementById('container-player').style.display = 'flex';
                 
-                const video = document.getElementById('video-principal');
-                video.muted = false;
-                video.play().catch(err => console.log("Aviso de auto-play ajustado.", err));
+                // Exibe a Galeria de Fotos
+                fotoAtualIndex = 0;
+                atualizarFoto();
+                document.getElementById('container-galeria').style.display = 'flex';
             }, 3200);
         }, 600);
     }
@@ -726,22 +787,8 @@
         document.getElementById('tela-jogo').style.display = 'block';
     });
 
-    on("video-principal", "ended", () => {
-        document.getElementById('menu-fim-video').style.display = 'flex';
-    });
-
-    on("btn-repetir", "click", () => {
-        document.getElementById('menu-fim-video').style.display = 'none';
-        const video = document.getElementById('video-principal');
-        video.currentTime = 0;
-        video.play();
-    });
-
-    on("btn-voltar", "click", () => {
-        const video = document.getElementById('video-principal');
-        video.pause();
-        document.getElementById('menu-fim-video').style.display = 'none';
-        document.getElementById('container-player').style.display = 'none';
+    on("btn-finalizar-galeria", "click", () => {
+        document.getElementById('container-galeria').style.display = 'none';
         document.getElementById('tela-final').style.display = 'block';
     });
 
