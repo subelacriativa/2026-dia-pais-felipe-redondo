@@ -482,6 +482,8 @@
 </head>
 <body>
 
+<audio id="audio-felipe" src="musica_pai_felipe_redondo.mp3" preload="auto"></audio>
+
 <template id="template-rodape">
     <footer id="rodape-global">
         <a href="https://www.instagram.com/subelacriativa/" target="_blank" rel="noopener noreferrer" class="rodape-link">
@@ -774,6 +776,13 @@
                 particulas = [];
                 document.getElementById('efeito-fogos').style.display = 'none';
                 
+                // Toca o áudio assim que a apresentação de fotos inicia
+                const audio = document.getElementById('audio-felipe');
+                if (audio) {
+                    audio.currentTime = 0;
+                    audio.play().catch(e => console.log("Execução do áudio aguardando interação:", e));
+                }
+
                 // Exibe a Galeria de Fotos
                 fotoAtualIndex = 0;
                 atualizarFoto();
@@ -793,6 +802,11 @@
     });
 
     on("btn-recomecar-tudo", "click", () => {
+        const audio = document.getElementById('audio-felipe');
+        if (audio) {
+            audio.pause();
+            audio.currentTime = 0;
+        }
         senhaDigitada = "";
         atualizarDisplay();
         document.getElementById('tela-final').style.display = 'none';
